@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precificação SHEIN Brasil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            margin-bottom: 24px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .header h1 span {
+            color: #e63946;
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .header .badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 14px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Grid Principal */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            color: #1a1a2e;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h2 .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .card h2 .icon.blue { background: #e3f2fd; }
+        .card h2 .icon.green { background: #e8f5e9; }
+        .card h2 .icon.orange { background: #fff3e0; }
+
+        /* Form Fields */
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .field label .hint {
+            font-weight: 400;
+            color: #999;
+            font-size: 0.75rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .input-wrapper .suffix {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #333;
+            background: #fafafa;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+            background: #fff;
+        }
+
+        input.has-prefix {
+            padding-left: 32px;
+        }
+
+        input.has-suffix {
+            padding-right: 32px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .info-box.red {
+            background: #fff5f5;
+            border: 1.5px solid #ffe0e0;
+            color: #c62828;
+        }
+
+        .info-box.blue {
+            background: #e3f2fd;
+            border: 1.5px solid #bbdefb;
+            color: #1565c0;
+        }
+
+        .info-box.green {
+            background: #e8f5e9;
+            border: 1.5px solid #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .info-box.orange {
+            background: #fff8e1;
+            border: 1.5px solid #ffe082;
+            color: #e65100;
+        }
+
+        .info-box .info-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+
+        .info-box strong {
+            font-weight: 700;
+        }
+
+        /* Weight slider area */
+        .weight-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .weight-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e0e0;
+            outline: none;
+        }
+
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e63946;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .weight-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e63946;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .weight-value {
+            min-width: 70px;
+            text-align: right;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e63946;
+        }
+
+        /* Freight table toggle */
+        .freight-table-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #1565c0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .freight-table-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .freight-table {
+            display: none;
+            margin-top: 10px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .freight-table.show {
+            display: table;
+        }
+
+        .freight-table th {
+            background: #f5f5f5;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 1.5px solid #ddd;
+        }
+
+        .freight-table td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+
+        .freight-table tr.active td {
+            background: #fff5f5;
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .freight-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Toggle switch */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #e8f5e9;
+            border: 1.5px solid #c8e6c9;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-row .info {
+            font-size: 0.8rem;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .toggle-row .info small {
+            font-weight: 400;
+            display: block;
+            color: #66bb6a;
+            font-size: 0.72rem;
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: #2e7d32;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Resultados - Detalhamento de Custos */
+        .deduction-list {
+            margin-bottom: 8px;
+        }
+
+        .deduction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 8px;
+        }
+
+        .deduction-item:last-child {
+            border-bottom: none;
+        }
+
+        .deduction-item .ded-label {
+            font-size: 0.8rem;
+            color: #666;
+            flex: 1;
+        }
+
+        .deduction-item .ded-label .ded-desc {
+            display: block;
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-top: 2px;
+        }
+
+        .deduction-item .ded-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .deduction-item .ded-value.negative { color: #c62828; }
+        .deduction-item .ded-value.neutral { color: #999; }
+        .deduction-item .ded-value.positive { color: #2e7d32; }
+
+        /* Dashed separator */
+        .deduction-sep {
+            border: none;
+            border-top: 2px dashed #e0e0e0;
+            margin: 4px 0;
+        }
+
+        /* Result Grid */
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .result-item {
+            padding: 12px 14px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .result-item .label {
+            font-size: 0.72rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-item .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .result-item .value.positive { color: #2e7d32; }
+        .result-item .value.negative { color: #c62828; }
+        .result-item .value.neutral { color: #999; }
+
+        /* Lucro Destaque */
+        .profit-highlight {
+            grid-column: 1 / -1;
+            padding: 18px 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .profit-highlight.profit {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+        }
+
+        .profit-highlight.loss {
+            background: #ffebee;
+            border-color: #ef9a9a;
+        }
+
+        .profit-highlight.zero {
+            background: #f5f5f5;
+            border-color: #e0e0e0;
+        }
+
+        .profit-highlight .label {
+            font-size: 0.78rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .profit-highlight .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .profit-highlight .value.positive { color: #2e7d32; }
+        .profit-highlight .value.negative { color: #c62828; }
+        .profit-highlight .value.zero { color: #999; }
+
+        .profit-highlight .sub {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* Barra Visual */
+        .bar-section {
+            grid-column: 1 / -1;
+            margin-top: 4px;
+        }
+
+        .bar-section .title {
+            font-size: 0.78rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cost-bar-container {
+            display: flex;
+            height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        .cost-bar-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            transition: width 0.4s ease;
+            min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .cost-bar-segment span {
+            padding: 0 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cost-bar-segment[style*="width: 0"] span,
+        .cost-bar-segment[style*="width:0"] span {
+            display: none;
+        }
+
+        .bar-commission { background: #e63946; }
+        .bar-logistics { background: #ff8c42; }
+        .bar-product { background: #457b9d; }
+        .bar-tax { background: #9c89b8; }
+        .bar-packaging { background: #84a98c; }
+        .bar-other { background: #a8a8a8; }
+        .bar-profit { background: #2e7d32; }
+        .bar-loss { background: #c62828; }
+
+        .bar-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-top: 10px;
+        }
+
+        .bar-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            color: #666;
+        }
+
+        .bar-legend-item .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Separador */
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 16px 0;
+            grid-column: 1 / -1;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .footer a {
+            color: #e63946;
+            text-decoration: none;
+        }
+
+        /* Custom freight section */
+        .custom-freight {
+            display: none;
+            margin-top: 8px;
+        }
+
+        .custom-freight.show {
+            display: block;
+        }
+
+        /* Platform deductions summary */
+        .platform-summary {
+            padding: 12px 14px;
+            background: #fef3f2;
+            border: 1.5px solid #fecaca;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .platform-summary .ps-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #991b1b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .platform-summary .ps-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 0.82rem;
+        }
+
+        .platform-summary .ps-row .ps-label {
+            color: #7f1d1d;
+        }
+
+        .platform-summary .ps-row .ps-val {
+            font-weight: 700;
+            color: #991b1b;
+        }
+
+        .platform-summary .ps-row .ps-val.negative {
+            color: #dc2626;
+        }
+
+        .platform-summary .ps-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0 0;
+            margin-top: 6px;
+            border-top: 1.5px solid #fecaca;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .platform-summary .ps-total .ps-label {
+            color: #7f1d1d;
+        }
+
+        .platform-summary .ps-total .ps-val {
+            color: #dc2626;
+        }
+
+        /* ===== Preço ideal & simulação ===== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 760px) {
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+
+        .quick-margins {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .quick-margins button {
+            border: 1.5px solid #e5e7eb;
+            background: #fff;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .quick-margins button:hover {
+            border-color: #1a1a2e;
+            color: #1a1a2e;
+        }
+
+        .price-suggestion {
+            border-radius: 12px;
+            padding: 14px 16px;
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+        }
+
+        .price-suggestion.error {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .price-suggestion .ps-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2e7d32;
+        }
+
+        .price-suggestion.error .ps-label { color: #b91c1c; }
+
+        .price-suggestion .ps-price {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #1b5e20;
+            margin: 2px 0;
+        }
+
+        .price-suggestion.error .ps-price { color: #991b1b; font-size: 1rem; }
+
+        .price-suggestion .ps-sub {
+            font-size: 0.78rem;
+            color: #2e7d32;
+        }
+
+        .price-suggestion.error .ps-sub { color: #b91c1c; }
+
+        .apply-btn {
+            margin-top: 10px;
+            border: none;
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .apply-btn:hover { background: #2d2d44; }
+
+        .breakeven-row {
+            margin-top: 12px;
+            font-size: 0.82rem;
+            color: #555;
+        }
+
+        .breakeven-row strong { color: #1a1a2e; }
+
+        .reset-btn {
+            margin-top: 14px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .reset-btn:hover { color: #dc2626; }
+
+        .scenario-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .scenario-table th {
+            text-align: right;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #999;
+            padding: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .scenario-table th:first-child { text-align: left; }
+
+        .scenario-table td {
+            padding: 10px 8px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .scenario-table td:first-child { text-align: left; font-weight: 600; }
+
+        .scenario-table td small {
+            display: block;
+            font-size: 0.68rem;
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .scenario-row { cursor: pointer; transition: background .12s; }
+
+        .scenario-row:hover { background: #f7f8fa; }
+
+        .scenario-row.hits { background: #e8f5e9; }
+
+        .scenario-row.hits td:first-child { border-radius: 8px 0 0 8px; }
+        .scenario-row.hits td:last-child { border-radius: 0 8px 8px 0; }
+
+        .scenario-table .pos { color: #2e7d32; font-weight: 700; }
+        .scenario-table .neg { color: #dc2626; font-weight: 700; }
+
+        .scenario-hint {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Calculadora de Precificação <span>SHEIN</span></h1>
+            <p>Descubra se seu produto é lucrativo na SHEIN. Comissão e logística são calculados automaticamente com base na categoria e peso do produto.</p>
+            <div class="badge">✅ Taxas atualizadas — Agosto 2026</div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Coluna Esquerda: Entrada -->
+            <div class="card">
+                <h2>
+                    <span class="icon blue">📦</span>
+                    Dados do Produto
+                </h2>
+
+                <!-- Toggle Novo Vendedor -->
+                <div class="toggle-row">
+                    <div class="info">
+                        Novo Vendedor (Isenção)
+                        <small>0% de comissão nos primeiros 90 dias</small>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="newSeller">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Preço de Venda -->
+                <div class="field">
+                    <label>Preço de Venda <span class="hint">(valor na SHEIN)</span></label>
+                    <div class="input-wrapper">
+                        <span class="prefix">R$</span>
+                        <input type="text" class="has-prefix" id="sellingPrice" placeholder="0,00" inputmode="decimal" value="89,90">
+                    </div>
+                </div>
+
+                <!-- Categoria -->
+                <div class="field">
+                    <label>Categoria do Produto</label>
+                    <select id="category">
+                        <option value="18">Demais Categorias — 18%</option>
+                        <option value="20">Moda Feminina — 20%</option>
+                        <option value="0">Novo Vendedor — 0% (isenção 90 dias)</option>
+                    </select>
+                </div>
+
+                <!-- Comissão Info -->
+                <div class="info-box red" id="commissionInfo">
+                    <span class="info-icon">💳</span>
+                    <span>Comissão SHEIN: <strong id="commissionRateDisplay">18%</strong> sobre o valor da venda. Inclui processamento de pagamento.</span>
+                </div>
+
+                <!-- Peso do Produto -->
+                <div class="field">
+                    <label>Peso do Produto (com embalagem) <span class="hint">(define a taxa de logística cobrada)</span></label>
+                    <div class="input-wrapper">
+                        <input type="range" class="weight-slider" id="weightSlider" min="0" max="30" step="0.1" value="0.3">
+                        <span class="weight-value" id="weightDisplay">0,30 kg</span>
+                    </div>
+                    <!-- Logistics fee info -->
+                    <div class="info-box orange" id="logisticsInfo">
+                        <span class="info-icon">🚚</span>
+                        <span>Taxa de Logística: <strong id="logisticsFeeDisplay">R$ 4,00</strong> <span id="logisticsBracketDisplay">(até 0,3 kg)</span><br>
+                        <em>Deducido automaticamente pela SHEIN do seu pagamento.</em></span>
+                    </div>
+                    <!-- Tabela de frete toggle -->
+                    <div class="freight-table-toggle" id="freightTableToggle">📋 Ver tabela completa de logística SHEIN</div>
+                    <table class="freight-table" id="freightTable">
+                        <thead>
+                            <tr><th>Faixa de Peso</th><th>Taxa de Logística</th></tr>
+                        </thead>
+                        <tbody id="freightTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Custom freight toggle -->
+                <div class="info-box blue" style="cursor:pointer;" id="customFreightToggle">
+                    <span class="info-icon">✏️</span>
+                    <span><strong>Inserir frete manualmente</strong> — se você conhece o valor exato cobrado pela SHEIN</span>
+                </div>
+                <div class="custom-freight" id="customFreightSection">
+                    <div class="field" style="margin-bottom: 0;">
+                        <label>Frete Personalizado <span class="hint">(sobrescreve a tabela de peso)</span></label>
+                        <div class="input-wrapper">
+                            <span class="prefix">R$</span>
+                            <input type="text" class="has-prefix" id="customFreight" placeholder="0,00" inputmode="decimal">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custo do Produto -->
+                <div class="field" style="margin-top: 16px;">
+                    <label>Custo do Produto <span class="hint">(valor pago ao fornecedor)</span></label>
+                    <div class="input-wrapper">
+                        <span class="prefix">R$</span>
+                        <input type="text" class="has-prefix" id="productCost" placeholder="0,00" inputmode="decimal" value="28,00">
+                    </div>
+                </div>
+
+                <!-- Custo de Insumos -->
+                <div class="field">
+                    <label>Custo de Insumos <span class="hint">(embalagem extra, fita, etiqueta...)</span></label>
+                    <div class="input-wrapper">
+                        <span class="prefix">R$</span>
+                        <input type="text" class="has-prefix" id="packagingCost" placeholder="0,00" inputmode="decimal" value="2,00">
+                    </div>
+                </div>
+
+                <!-- ICMS -->
+                <div class="field">
+                    <label>ICMS <span class="hint">(alíquota do imposto — ex: 12% interestadual)</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" class="has-suffix" id="icmsRate" placeholder="0,00" inputmode="decimal" value="12">
+                        <span class="suffix">%</span>
+                    </div>
+                </div>
+
+                <!-- Marketing -->
+                <div class="field">
+                    <label>Custo com Marketing/Ads <span class="hint">(Shein Ads — opcional)</span></label>
+                    <div class="input-wrapper">
+                        <span class="prefix">R$</span>
+                        <input type="text" class="has-prefix" id="marketingCost" placeholder="0,00" inputmode="decimal">
+                    </div>
+                </div>
+
+                <!-- Outros Custos -->
+                <div class="field">
+                    <label>Outros Custos <span class="hint">(funcionários, aluguel proporcional, etc.)</span></label>
+                    <div class="input-wrapper">
+                        <span class="prefix">R$</span>
+                        <input type="text" class="has-prefix" id="otherCosts" placeholder="0,00" inputmode="decimal">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Direita: Resultados -->
+            <div class="card">
+                <h2>
+                    <span class="icon green">📊</span>
+                    Resultado da Venda
+                </h2>
+
+                <!-- Detalhamento de Custos da Plataforma -->
+                <div class="platform-summary" id="platformSummary">
+                    <div class="ps-title">💰 Descontos Automáticos da SHEIN</div>
+                    <div class="ps-row">
+                        <span class="ps-label" id="psCommLabel">Comissão SHEIN (18%)</span>
+                        <span class="ps-val negative" id="psCommVal">-R$ 0,00</span>
+                    </div>
+                    <div class="ps-row">
+                        <span class="ps-label" id="psLogLabel">Taxa de Logística (até 0,3 kg)</span>
+                        <span class="ps-val negative" id="psLogVal">-R$ 4,00</span>
+                    </div>
+                    <div class="ps-total">
+                        <span class="ps-label">Total Descontos SHEIN</span>
+                        <span class="ps-val" id="psTotalVal">-R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Receita líquida after platform -->
+                <div class="result-item" style="margin-bottom: 12px;">
+                    <div class="label">💰 Você Recebe (após descontos SHEIN)</div>
+                    <div class="value positive" id="resultYouReceive" style="font-size: 1.15rem;">R$ 0,00</div>
+                </div>
+
+                <div class="divider" style="margin: 0 0 16px;"></div>
+
+                <div class="result-grid">
+                    <!-- Custo do Produto -->
+                    <div class="result-item">
+                        <div class="label">Custo do Produto</div>
+                        <div class="value neutral" id="resultProduct">R$ 0,00</div>
+                    </div>
+
+                    <!-- Custo Embalagem -->
+                    <div class="result-item">
+                        <div class="label">Insumos/Embalagem</div>
+                        <div class="value neutral" id="resultPackaging">R$ 0,00</div>
+                    </div>
+
+                    <!-- ICMS -->
+                    <div class="result-item">
+                        <div class="label">ICMS</div>
+                        <div class="value neutral" id="resultICMS">R$ 0,00</div>
+                    </div>
+
+                    <!-- Marketing -->
+                    <div class="result-item">
+                        <div class="label">Marketing/Ads</div>
+                        <div class="value neutral" id="resultMarketing">R$ 0,00</div>
+                    </div>
+
+                    <!-- Outros -->
+                    <div class="result-item">
+                        <div class="label">Outros Custos</div>
+                        <div class="value neutral" id="resultOther">R$ 0,00</div>
+                    </div>
+
+                    <!-- Custo Total -->
+                    <div class="result-item" style="background: #fff3e0; border-color: #ffe0b2;">
+                        <div class="label">📦 Custo Total Operacional</div>
+                        <div class="value" id="resultTotalCosts" style="color: #e65100;">R$ 0,00</div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Lucro Destaque -->
+                    <div class="profit-highlight zero" id="profitHighlight">
+                        <div class="label">Lucro por Produto</div>
+                        <div class="value zero" id="resultProfit">R$ 0,00</div>
+                        <div class="sub" id="resultProfitSub">Insira os valores para calcular</div>
+                    </div>
+
+                    <!-- Margem -->
+                    <div class="result-item">
+                        <div class="label">Margem de Lucro</div>
+                        <div class="value neutral" id="resultMargin">0,00%</div>
+                    </div>
+
+                    <!-- Markup -->
+                    <div class="result-item">
+                        <div class="label">Markup</div>
+                        <div class="value neutral" id="resultMarkup">0,00%</div>
+                    </div>
+
+                    <!-- ROI -->
+                    <div class="result-item">
+                        <div class="label">ROI</div>
+                        <div class="value neutral" id="resultROI">0,00%</div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Barra Visual -->
+                    <div class="bar-section">
+                        <div class="title">Composição do Preço de Venda</div>
+                        <div class="cost-bar-container" id="costBar">
+                            <div class="cost-bar-segment bar-commission" style="width: 0%;" id="barCommission"><span>Comissão</span></div>
+                            <div class="cost-bar-segment bar-logistics" style="width: 0%;" id="barLogistics"><span>Logística</span></div>
+                            <div class="cost-bar-segment bar-product" style="width: 0%;" id="barProduct"><span>Produto</span></div>
+                            <div class="cost-bar-segment bar-packaging" style="width: 0%;" id="barPackaging"><span>Embalagem</span></div>
+                            <div class="cost-bar-segment bar-tax" style="width: 0%;" id="barTax"><span>ICMS</span></div>
+                            <div class="cost-bar-segment bar-other" style="width: 0%;" id="barOther"><span>Outros</span></div>
+                            <div class="cost-bar-segment bar-profit" style="width: 0%;" id="barProfit"><span>Lucro</span></div>
+                        </div>
+                        <div class="bar-legend">
+                            <div class="bar-legend-item"><span class="dot bar-commission"></span>Comissão</div>
+                            <div class="bar-legend-item"><span class="dot bar-logistics"></span>Logística SHEIN</div>
+                            <div class="bar-legend-item"><span class="dot bar-product"></span>Produto</div>
+                            <div class="bar-legend-item"><span class="dot bar-packaging"></span>Embalagem</div>
+                            <div class="bar-legend-item"><span class="dot bar-tax"></span>ICMS</div>
+                            <div class="bar-legend-item"><span class="dot bar-other"></span>Outros</div>
+                            <div class="bar-legend-item"><span class="dot bar-profit"></span>Lucro</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preço Ideal & Simulação -->
+        <div class="tools-grid">
+            <div class="card">
+                <h2>
+                    <span class="icon green">🎯</span>
+                    Preço Ideal por Margem
+                </h2>
+                <div class="field">
+                    <label>Margem de lucro desejada <span class="hint">(líquida sobre o preço de venda)</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" class="has-suffix" id="targetMargin" value="30" placeholder="30" inputmode="decimal">
+                        <span class="suffix">%</span>
+                    </div>
+                </div>
+                <div class="quick-margins" style="margin-top: 12px;">
+                    <button type="button" data-m="20">20%</button>
+                    <button type="button" data-m="30">30%</button>
+                    <button type="button" data-m="40">40%</button>
+                    <button type="button" data-m="50">50%</button>
+                </div>
+                <div class="price-suggestion" id="alvoOut"></div>
+                <div class="breakeven-row">Ponto de equilíbrio (lucro zero): <strong id="breakevenVal">—</strong></div>
+                <button type="button" class="reset-btn" id="resetBtn">↺ Limpar dados salvos</button>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <span class="icon orange">🧪</span>
+                    Simulação de Preços
+                </h2>
+                <table class="scenario-table">
+                    <thead>
+                        <tr><th>Preço na SHEIN</th><th>Lucro</th><th>Margem</th><th>ROI</th></tr>
+                    </thead>
+                    <tbody id="scenarioBody"></tbody>
+                </table>
+                <p class="scenario-hint">💡 Preços gerados como múltiplos do custo do produto (2× = preço dobrado, etc.), já descontando comissão, logística, ICMS e custos. Linha verde = atinge sua margem alvo. <strong>Clique em uma linha para aplicar o preço.</strong></p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Calculadora de Precificação SHEIN Brasil — Taxas atualizadas para 2025/2026<br>
+            Comissão: 18% a 20% por categoria &bull; Logística: R$4 a R$106 por peso &bull; Sem taxa fixa &bull; ICMS por conta do vendedor<br>
+            <br>
+            <a href="https://br.shein.com/SHEIN-Commission-Policy-a-1420.html" target="_blank">Política Oficial de Comissão SHEIN</a>
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // SHEIN Logistics Fee Table
+        // ========================
+        const LOGISTICS_TABLE = [
+            { minWeight: 0,    maxWeight: 0.3,  fee: 4.00  },
+            { minWeight: 0.3,  maxWeight: 0.5,  fee: 5.00  },
+            { minWeight: 0.5,  maxWeight: 1,    fee: 5.00  },
+            { minWeight: 1,    maxWeight: 2,    fee: 5.00  },
+            { minWeight: 2,    maxWeight: 5,    fee: 15.00 },
+            { minWeight: 5,    maxWeight: 9,    fee: 32.00 },
+            { minWeight: 9,    maxWeight: 13,   fee: 63.00 },
+            { minWeight: 13,   maxWeight: 17,   fee: 73.00 },
+            { minWeight: 17,   maxWeight: 23,   fee: 89.00 },
+            { minWeight: 23,   maxWeight: 30,   fee: 106.00 },
+            { minWeight: 30,   maxWeight: Infinity, fee: 106.00 } // cap at 30kg+
+        ];
+
+        function getLogisticsFee(weightKg) {
+            if (weightKg <= 0) return 0;
+            for (const bracket of LOGISTICS_TABLE) {
+                if (weightKg > bracket.minWeight && weightKg <= bracket.maxWeight) {
+                    return bracket.fee;
+                }
+            }
+            return 106.00;
+        }
+
+        function getLogisticsBracketLabel(weightKg) {
+            if (weightKg <= 0) return '';
+            for (const bracket of LOGISTICS_TABLE) {
+                if (weightKg > bracket.minWeight && weightKg <= bracket.maxWeight) {
+                    const min = bracket.minWeight === 0 ? '' : bracket.minWeight.toFixed(1).replace('.', ',');
+                    const max = bracket.maxWeight === Infinity ? '30+ kg' : bracket.maxWeight.toFixed(1).replace('.', ',') + ' kg';
+                    return min ? (min + ' a ' + max) : ('até ' + max);
+                }
+            }
+            return '30+ kg';
+        }
+
+        // ========================
+        // Utility Functions
+        // ========================
+
+        function parseBRL(str) {
+            if (!str) return 0;
+            str = str.replace(/[R$\s]/g, '');
+            str = str.replace(/\./g, '').replace(',', '.');
+            const num = parseFloat(str);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function formatBRL(value) {
+            return value.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatPercent(value) {
+            return value.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + '%';
+        }
+
+        function formatWeight(kg) {
+            return kg.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).replace('.', ',') + ' kg';
+        }
+
+        // ========================
+        // Input Mask
+        // ========================
+
+        function maskBRL(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value === '') {
+                input.value = '';
+                return;
+            }
+            value = value.padStart(3, '0');
+            const integer = value.slice(0, -2);
+            const decimal = value.slice(-2);
+            let formatted = '';
+            for (let i = integer.length - 1; i >= 0; i--) {
+                if ((integer.length - 1 - i) % 3 === 0 && i < integer.length - 1) {
+                    formatted = '.' + formatted;
+                }
+                formatted = integer[i] + formatted;
+            }
+            formatted = formatted.replace(/^0+(\d)/, '$1');
+            input.value = formatted + ',' + decimal;
+        }
+
+        function maskPercent(input) {
+            let value = input.value.replace(/[^\d,]/g, '');
+            const parts = value.split(',');
+            if (parts.length > 2) {
+                value = parts[0] + ',' + parts.slice(1).join('');
+            }
+            if (parts.length === 2 && parts[1].length > 2) {
+                value = parts[0] + ',' + parts[1].slice(0, 2);
+            }
+            input.value = value;
+        }
+
+        // ========================
+        // DOM Elements
+        // ========================
+
+        const els = {
+            sellingPrice: document.getElementById('sellingPrice'),
+            category: document.getElementById('category'),
+            productCost: document.getElementById('productCost'),
+            packagingCost: document.getElementById('packagingCost'),
+            customFreight: document.getElementById('customFreight'),
+            icmsRate: document.getElementById('icmsRate'),
+            marketingCost: document.getElementById('marketingCost'),
+            otherCosts: document.getElementById('otherCosts'),
+            newSeller: document.getElementById('newSeller'),
+            weightSlider: document.getElementById('weightSlider'),
+            weightDisplay: document.getElementById('weightDisplay'),
+            commissionRateDisplay: document.getElementById('commissionRateDisplay'),
+            commissionInfo: document.getElementById('commissionInfo'),
+            logisticsInfo: document.getElementById('logisticsInfo'),
+            logisticsFeeDisplay: document.getElementById('logisticsFeeDisplay'),
+            logisticsBracketDisplay: document.getElementById('logisticsBracketDisplay'),
+            freightTableToggle: document.getElementById('freightTableToggle'),
+            freightTable: document.getElementById('freightTable'),
+            freightTableBody: document.getElementById('freightTableBody'),
+            customFreightToggle: document.getElementById('customFreightToggle'),
+            customFreightSection: document.getElementById('customFreightSection'),
+            // Platform summary
+            psCommLabel: document.getElementById('psCommLabel'),
+            psCommVal: document.getElementById('psCommVal'),
+            psLogLabel: document.getElementById('psLogLabel'),
+            psLogVal: document.getElementById('psLogVal'),
+            psTotalVal: document.getElementById('psTotalVal'),
+            // Results
+            resultYouReceive: document.getElementById('resultYouReceive'),
+            resultProduct: document.getElementById('resultProduct'),
+            resultPackaging: document.getElementById('resultPackaging'),
+            resultICMS: document.getElementById('resultICMS'),
+            resultMarketing: document.getElementById('resultMarketing'),
+            resultOther: document.getElementById('resultOther'),
+            resultTotalCosts: document.getElementById('resultTotalCosts'),
+            resultProfit: document.getElementById('resultProfit'),
+            resultProfitSub: document.getElementById('resultProfitSub'),
+            resultMargin: document.getElementById('resultMargin'),
+            resultMarkup: document.getElementById('resultMarkup'),
+            resultROI: document.getElementById('resultROI'),
+            profitHighlight: document.getElementById('profitHighlight'),
+            // Bar
+            barCommission: document.getElementById('barCommission'),
+            barLogistics: document.getElementById('barLogistics'),
+            barProduct: document.getElementById('barProduct'),
+            barPackaging: document.getElementById('barPackaging'),
+            barTax: document.getElementById('barTax'),
+            barOther: document.getElementById('barOther'),
+            barProfit: document.getElementById('barProfit'),
+            // Preço ideal & simulação
+            targetMargin: document.getElementById('targetMargin'),
+            alvoOut: document.getElementById('alvoOut'),
+            breakevenVal: document.getElementById('breakevenVal'),
+            scenarioBody: document.getElementById('scenarioBody'),
+            resetBtn: document.getElementById('resetBtn'),
+        };
+
+        // ========================
+        // Build Freight Table
+        // ========================
+
+        function buildFreightTable() {
+            let html = '';
+            LOGISTICS_TABLE.forEach((bracket, i) => {
+                if (bracket.maxWeight === Infinity) return;
+                const min = bracket.minWeight === 0 ? 'Até' : bracket.minWeight.toFixed(1).replace('.', ',') + ' kg';
+                const max = bracket.maxWeight.toFixed(1).replace('.', ',') + ' kg';
+                const range = bracket.minWeight === 0 ? (min + ' ' + max) : (min + ' a ' + max);
+                html += '<tr data-index="' + i + '"><td>' + range + '</td><td>R$ ' + bracket.fee.toFixed(2).replace('.', ',') + '</td></tr>';
+            });
+            els.freightTableBody.innerHTML = html;
+        }
+
+        // ========================
+        // Event Listeners
+        // ========================
+
+        // BRL masks
+        const brlInputs = [els.sellingPrice, els.productCost, els.packagingCost, els.customFreight, els.marketingCost, els.otherCosts];
+        brlInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                maskBRL(input);
+                onAnyChange();
+            });
+        });
+
+        els.icmsRate.addEventListener('input', () => {
+            maskPercent(els.icmsRate);
+            onAnyChange();
+        });
+
+        // Weight slider
+        els.weightSlider.addEventListener('input', () => {
+            const weight = parseFloat(els.weightSlider.value);
+            els.weightDisplay.textContent = formatWeight(weight);
+            updateLogisticsDisplay(weight);
+            onAnyChange();
+        });
+
+        // Category
+        els.category.addEventListener('change', () => {
+            updateCommissionDisplay();
+            onAnyChange();
+        });
+
+        // New seller toggle
+        els.newSeller.addEventListener('change', function () {
+            if (this.checked) {
+                els.category.value = '0';
+                els.category.disabled = true;
+                els.commissionInfo.innerHTML = '<span class="info-icon">🎉</span><span><strong>Isenção ativada!</strong> 0% de comissão nos primeiros 90 dias como novo vendedor SHEIN.</span>';
+                els.commissionInfo.className = 'info-box green';
+            } else {
+                els.category.disabled = false;
+                els.commissionInfo.className = 'info-box red';
+                updateCommissionDisplay();
+            }
+            onAnyChange();
+        });
+
+        // Freight table toggle
+        els.freightTableToggle.addEventListener('click', () => {
+            els.freightTable.classList.toggle('show');
+            els.freightTableToggle.textContent = els.freightTable.classList.contains('show')
+                ? '🔽 Ocultar tabela de logística'
+                : '📋 Ver tabela completa de logística SHEIN';
+        });
+
+        // Custom freight toggle
+        els.customFreightToggle.addEventListener('click', () => {
+            els.customFreightSection.classList.toggle('show');
+            onAnyChange();
+        });
+
+        // Margem alvo
+        els.targetMargin.addEventListener('input', () => {
+            maskPercent(els.targetMargin);
+            onAnyChange();
+        });
+
+        // Botões rápidos de margem
+        document.querySelectorAll('.quick-margins button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                els.targetMargin.value = btn.getAttribute('data-m');
+                onAnyChange();
+            });
+        });
+
+        // Limpar dados salvos
+        els.resetBtn.addEventListener('click', () => {
+            try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+            location.reload();
+        });
+
+        // ========================
+        // Display Helpers
+        // ========================
+
+        function updateCommissionDisplay() {
+            const rate = parseFloat(els.category.value);
+            if (rate === 0) {
+                els.commissionInfo.innerHTML = '<span class="info-icon">🎉</span><span><strong>Isenção!</strong> 0% de comissão (novo vendedor SHEIN).</span>';
+                els.commissionInfo.className = 'info-box green';
+            } else {
+                els.commissionInfo.innerHTML = '<span class="info-icon">💳</span><span>Comissão SHEIN: <strong>' + rate + '%</strong> sobre o valor da venda. Inclui processamento de pagamento.</span>';
+                els.commissionInfo.className = 'info-box red';
+            }
+        }
+
+        function updateLogisticsDisplay(weight) {
+            const fee = getLogisticsFee(weight);
+            const label = getLogisticsBracketLabel(weight);
+            els.logisticsFeeDisplay.textContent = formatBRL(fee);
+            els.logisticsBracketDisplay.textContent = weight > 0 ? '(' + label + ')' : '';
+            // Highlight active row in table
+            const rows = els.freightTableBody.querySelectorAll('tr');
+            rows.forEach((row, i) => {
+                const bracket = LOGISTICS_TABLE[i];
+                if (bracket && weight > bracket.minWeight && weight <= bracket.maxWeight) {
+                    row.classList.add('active');
+                } else {
+                    row.classList.remove('active');
+                }
+            });
+        }
+
+        // ========================
+        // Calculation Engine
+        // ========================
+
+        let useCustomFreight = false;
+
+        function calculate() {
+            const sellingPrice = parseBRL(els.sellingPrice.value);
+            const productCost = parseBRL(els.productCost.value);
+            const packagingCost = parseBRL(els.packagingCost.value);
+            const customFreightVal = parseBRL(els.customFreight.value);
+            const icmsRate = parseBRL(els.icmsRate.value) / 100;
+            const marketingCost = parseBRL(els.marketingCost.value);
+            const otherCosts = parseBRL(els.otherCosts.value);
+            const commissionRate = parseFloat(els.category.value) / 100;
+            const weight = parseFloat(els.weightSlider.value);
+
+            // Determine logistics fee
+            useCustomFreight = els.customFreightSection.classList.contains('show') && customFreightVal > 0;
+            const logisticsFee = useCustomFreight ? customFreightVal : getLogisticsFee(weight);
+
+            // Calculate SHEIN commission (on selling price)
+            const commission = sellingPrice * commissionRate;
+
+            // Total platform deductions
+            const platformDeductions = commission + logisticsFee;
+
+            // What the seller actually receives
+            const youReceive = sellingPrice - platformDeductions;
+
+            // ICMS (on selling price)
+            const icms = sellingPrice * icmsRate;
+
+            // Operational costs (what the seller spends)
+            const operationalCosts = productCost + packagingCost + icms + marketingCost + otherCosts;
+
+            // Profit = what you receive - what you spend
+            const profit = youReceive - operationalCosts;
+
+            // Margin = Profit / Selling Price * 100
+            const margin = sellingPrice > 0 ? (profit / sellingPrice) * 100 : 0;
+
+            // Markup = Preço / Custo total (quantas vezes o custo cabe no preço)
+            const markup = operationalCosts > 0 ? (sellingPrice / operationalCosts) * 100 : 0;
+
+            // ROI = Profit / OperationalCosts * 100
+            const roi = operationalCosts > 0 ? (profit / operationalCosts) * 100 : 0;
+
+            // ========================
+            // Update UI
+            // ========================
+
+            const commPercent = parseFloat(els.category.value);
+
+            // Platform summary
+            els.psCommLabel.textContent = 'Comissão SHEIN (' + commPercent + '%)';
+            els.psCommVal.textContent = '-' + formatBRL(commission);
+            els.psLogLabel.textContent = useCustomFreight
+                ? 'Taxa de Logística (personalizado)'
+                : 'Taxa de Logística (' + (weight > 0 ? getLogisticsBracketLabel(weight) : '0 kg') + ')';
+            els.psLogVal.textContent = '-' + formatBRL(logisticsFee);
+            els.psTotalVal.textContent = '-' + formatBRL(platformDeductions);
+
+            // What you receive
+            els.resultYouReceive.textContent = formatBRL(youReceive);
+            if (sellingPrice > 0) {
+                els.resultYouReceive.className = youReceive > 0 ? 'value positive' : youReceive < 0 ? 'value negative' : 'value neutral';
+            } else {
+                els.resultYouReceive.className = 'value neutral';
+            }
+
+            // Operational costs
+            els.resultProduct.textContent = formatBRL(productCost);
+            els.resultPackaging.textContent = formatBRL(packagingCost);
+            els.resultICMS.textContent = formatBRL(icms);
+            els.resultMarketing.textContent = formatBRL(marketingCost);
+            els.resultOther.textContent = formatBRL(otherCosts);
+            els.resultTotalCosts.textContent = formatBRL(operationalCosts);
+
+            // Profit highlight
+            if (sellingPrice === 0) {
+                els.profitHighlight.className = 'profit-highlight zero';
+                els.resultProfit.className = 'value zero';
+                els.resultProfit.textContent = formatBRL(0);
+                els.resultProfitSub.textContent = 'Insira os valores para calcular';
+            } else if (profit > 0) {
+                els.profitHighlight.className = 'profit-highlight profit';
+                els.resultProfit.className = 'value positive';
+                els.resultProfit.textContent = formatBRL(profit);
+                els.resultProfitSub.textContent = '✅ Produto LUCRATIVO na SHEIN';
+            } else if (profit < 0) {
+                els.profitHighlight.className = 'profit-highlight loss';
+                els.resultProfit.className = 'value negative';
+                els.resultProfit.textContent = formatBRL(profit);
+                els.resultProfitSub.textContent = '❌ Produto com PREJUÍZO — ajuste o preço ou custos';
+            } else {
+                els.profitHighlight.className = 'profit-highlight zero';
+                els.resultProfit.className = 'value zero';
+                els.resultProfit.textContent = formatBRL(0);
+                els.resultProfitSub.textContent = '⚠️ Ponto de equilíbrio — sem lucro nem prejuízo';
+            }
+
+            // Margin, Markup, ROI
+            els.resultMargin.textContent = formatPercent(margin);
+            els.resultMarkup.textContent = formatPercent(markup);
+            els.resultROI.textContent = formatPercent(roi);
+
+            [
+                els.resultMargin,
+                els.resultMarkup,
+                els.resultROI
+            ].forEach(el => {
+                if (sellingPrice === 0) {
+                    el.className = 'value neutral';
+                } else {
+                    const val = parseBRL(el.textContent.replace('%', ''));
+                    el.className = val > 0 ? 'value positive' : val < 0 ? 'value negative' : 'value neutral';
+                }
+            });
+
+            // ========================
+            // Update Cost Bar
+            // ========================
+            if (sellingPrice > 0) {
+                const pCommission = (commission / sellingPrice) * 100;
+                const pLogistics = (logisticsFee / sellingPrice) * 100;
+                const pProduct = (productCost / sellingPrice) * 100;
+                const pPackaging = (packagingCost / sellingPrice) * 100;
+                const pTax = (icms / sellingPrice) * 100;
+                const pOther = (marketingCost + otherCosts) / sellingPrice * 100;
+                const pProfit = Math.max(0, (profit / sellingPrice) * 100);
+
+                const total = pCommission + pLogistics + pProduct + pPackaging + pTax + pOther + pProfit;
+                const scale = total > 100 ? 100 / total : 1;
+
+                setBar('barCommission', pCommission * scale, 'Comissão');
+                setBar('barLogistics', pLogistics * scale, 'Logística');
+                setBar('barProduct', pProduct * scale, 'Produto');
+                setBar('barPackaging', pPackaging * scale, 'Embalagem');
+                setBar('barTax', pTax * scale, 'ICMS');
+                setBar('barOther', pOther * scale, 'Outros');
+                setBar('barProfit', pProfit * scale, profit >= 0 ? 'Lucro' : 'Prejuízo');
+
+                if (profit < 0) {
+                    els.barProfit.className = 'cost-bar-segment bar-loss';
+                } else {
+                    els.barProfit.className = 'cost-bar-segment bar-profit';
+                }
+            } else {
+                ['barCommission', 'barLogistics', 'barProduct', 'barPackaging', 'barTax', 'barOther', 'barProfit'].forEach(id => {
+                    setBar(id, 0, '');
+                });
+            }
+        }
+
+        function setBar(id, percent, label) {
+            const el = document.getElementById(id);
+            const clampedPercent = Math.max(0, Math.min(100, percent));
+            el.style.width = clampedPercent + '%';
+            const span = el.querySelector('span');
+            if (span) {
+                span.textContent = clampedPercent >= 8 ? label : '';
+            }
+        }
+
+        // ========================
+        // Preço Ideal & Simulação
+        // ========================
+
+        const STORE_KEY = 'shein-calc-state-v2';
+
+        // Taxa de logística efetivamente usada (tabela por peso ou frete manual)
+        function getLogisticsUsed() {
+            const customFreightVal = parseBRL(els.customFreight.value);
+            const useCustom = els.customFreightSection.classList.contains('show') && customFreightVal > 0;
+            return useCustom ? customFreightVal : getLogisticsFee(parseFloat(els.weightSlider.value));
+        }
+
+        // Custos fixos por pedido (não dependem do preço)
+        function getFixedCosts() {
+            return parseBRL(els.productCost.value)
+                + parseBRL(els.packagingCost.value)
+                + parseBRL(els.marketingCost.value)
+                + parseBRL(els.otherCosts.value)
+                + getLogisticsUsed();
+        }
+
+        // Percentuais que incidem sobre o preço (comissão + ICMS)
+        function getVariableRate() {
+            return parseFloat(els.category.value) / 100 + parseBRL(els.icmsRate.value) / 100;
+        }
+
+        function calcScenario(price) {
+            const v = getVariableRate();
+            const fixed = getFixedCosts();
+            const profit = price * (1 - v) - fixed;
+            return {
+                profit: profit,
+                margin: price > 0 ? (profit / price) * 100 : 0,
+                roi: fixed > 0 ? (profit / fixed) * 100 : 0
+            };
+        }
+
+        // Preço necessário para atingir determinada margem líquida
+        function priceForMargin(marginPct) {
+            const denom = 1 - getVariableRate() - marginPct / 100;
+            if (denom <= 0.01) return null;
+            return getFixedCosts() / denom;
+        }
+
+        function renderAlvo() {
+            const margin = parseBRL(els.targetMargin.value);
+            const price = priceForMargin(margin);
+
+            if (price == null) {
+                els.alvoOut.className = 'price-suggestion error';
+                els.alvoOut.innerHTML =
+                    '<div class="ps-label">Não é possível atingir essa margem</div>' +
+                    '<div class="ps-price">⚠️ 100% excedido</div>' +
+                    '<div class="ps-sub">Comissão + ICMS + margem somam mais de 100% do preço. Reduza a margem alvo ou as taxas.</div>';
+                els.breakevenVal.textContent = '—';
+                return;
+            }
+
+            const s = calcScenario(price);
+            els.alvoOut.className = 'price-suggestion';
+            els.alvoOut.innerHTML =
+                '<div class="ps-label">Preço ideal na SHEIN</div>' +
+                '<div class="ps-price">' + formatBRL(price) + '</div>' +
+                '<div class="ps-sub">Lucro de ' + formatBRL(s.profit) + ' por venda · ROI ' + formatPercent(s.roi) + '</div>' +
+                '<button type="button" class="apply-btn" id="applyAlvo">Usar este preço</button>';
+
+            document.getElementById('applyAlvo').addEventListener('click', function () {
+                els.sellingPrice.value = price.toFixed(2);
+                maskBRL(els.sellingPrice);
+                onAnyChange();
+            });
+
+            const v = getVariableRate();
+            els.breakevenVal.textContent = v < 1 ? formatBRL(getFixedCosts() / (1 - v)) : '—';
+        }
+
+        function renderScenarios() {
+            const productCost = parseBRL(els.productCost.value);
+            const target = parseBRL(els.targetMargin.value);
+
+            if (productCost <= 0) {
+                els.scenarioBody.innerHTML =
+                    '<tr><td colspan="4" style="text-align:center;color:#999;padding:18px">Preencha o custo do produto para simular</td></tr>';
+                return;
+            }
+
+            let html = '';
+            [1.5, 2, 2.5, 3, 3.5, 4].forEach(function (mult) {
+                const price = productCost * mult;
+                const s = calcScenario(price);
+                const hits = target > 0 && s.margin >= target;
+                html += '<tr class="scenario-row' + (hits ? ' hits' : '') + '" data-price="' + price.toFixed(2) + '">' +
+                    '<td>' + formatBRL(price) + '<small>' + mult.toLocaleString('pt-BR', { minimumFractionDigits: 1 }) + '× custo</small></td>' +
+                    '<td class="' + (s.profit >= 0 ? 'pos' : 'neg') + '">' + formatBRL(s.profit) + '</td>' +
+                    '<td class="' + (s.margin >= 0 ? 'pos' : 'neg') + '">' + formatPercent(s.margin) + '</td>' +
+                    '<td>' + formatPercent(s.roi) + '</td></tr>';
+            });
+            els.scenarioBody.innerHTML = html;
+
+            els.scenarioBody.querySelectorAll('tr.scenario-row').forEach(function (tr) {
+                tr.addEventListener('click', function () {
+                    els.sellingPrice.value = this.getAttribute('data-price');
+                    maskBRL(els.sellingPrice);
+                    onAnyChange();
+                });
+            });
+        }
+
+        // ========================
+        // Persistência (localStorage)
+        // ========================
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORE_KEY, JSON.stringify({
+                    sellingPrice: els.sellingPrice.value,
+                    category: els.category.value,
+                    productCost: els.productCost.value,
+                    packagingCost: els.packagingCost.value,
+                    customFreight: els.customFreight.value,
+                    icmsRate: els.icmsRate.value,
+                    marketingCost: els.marketingCost.value,
+                    otherCosts: els.otherCosts.value,
+                    weight: els.weightSlider.value,
+                    newSeller: els.newSeller.checked,
+                    freightOpen: els.customFreightSection.classList.contains('show'),
+                    targetMargin: els.targetMargin.value
+                }));
+            } catch (e) {}
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORE_KEY);
+                if (!raw) return;
+                const s = JSON.parse(raw);
+                if (s.sellingPrice != null) els.sellingPrice.value = s.sellingPrice;
+                if (s.category != null && !s.newSeller) els.category.value = s.category;
+                if (s.productCost != null) els.productCost.value = s.productCost;
+                if (s.packagingCost != null) els.packagingCost.value = s.packagingCost;
+                if (s.customFreight != null) els.customFreight.value = s.customFreight;
+                if (s.icmsRate != null) els.icmsRate.value = s.icmsRate;
+                if (s.marketingCost != null) els.marketingCost.value = s.marketingCost;
+                if (s.otherCosts != null) els.otherCosts.value = s.otherCosts;
+                if (s.weight != null) {
+                    els.weightSlider.value = s.weight;
+                    els.weightDisplay.textContent = formatWeight(parseFloat(s.weight));
+                }
+                if (s.freightOpen) els.customFreightSection.classList.add('show');
+                if (s.newSeller) {
+                    els.newSeller.checked = true;
+                    els.category.value = '0';
+                    els.category.disabled = true;
+                    els.commissionInfo.innerHTML = '<span class="info-icon">🎉</span><span><strong>Isenção ativada!</strong> 0% de comissão nos primeiros 90 dias como novo vendedor SHEIN.</span>';
+                    els.commissionInfo.className = 'info-box green';
+                }
+                if (s.targetMargin != null) els.targetMargin.value = s.targetMargin;
+            } catch (e) {}
+        }
+
+        // Recalcula tudo e salva o estado
+        function onAnyChange() {
+            calculate();
+            renderAlvo();
+            renderScenarios();
+            saveState();
+        }
+
+        // ========================
+        // Initialize
+        // ========================
+        loadState();
+        buildFreightTable();
+        updateCommissionDisplay();
+        updateLogisticsDisplay(parseFloat(els.weightSlider.value));
+        onAnyChange();
+    </script>
+</body>
+</html>
